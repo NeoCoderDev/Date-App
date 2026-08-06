@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Jedno važno pitanje ❤️</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      padding: 24px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #2f1b25;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 124, 169, 0.25), transparent 34%),
+        radial-gradient(circle at 80% 75%, rgba(255, 194, 214, 0.40), transparent 30%),
+        linear-gradient(135deg, #ffd9e7, #fff4f8);
+    }
+
+    .card {
+      width: min(100%, 460px);
+      padding: 38px 28px;
+      border: 1px solid rgba(115, 47, 72, 0.12);
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 20px 50px rgba(115, 47, 72, 0.16);
+      text-align: center;
+    }
+
+    .heart {
+      display: grid;
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 20px;
+      place-items: center;
+      border-radius: 50%;
+      background: #ffe2ec;
+      font-size: 32px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.65rem, 6vw, 2.25rem);
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin: 13px auto 26px;
+      color: #7c5967;
+      line-height: 1.5;
+    }
+
+    .button-zone {
+      position: relative;
+      min-height: 105px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    button {
+      min-width: 125px;
+      padding: 13px 22px;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+
+    button:focus-visible {
+      outline: 3px solid rgba(227, 51, 113, 0.28);
+      outline-offset: 3px;
+    }
+
+    #yesButton {
+      color: white;
+      background: #e73371;
+      box-shadow: 0 8px 20px rgba(231, 51, 113, 0.25);
+    }
+
+    #yesButton:hover {
+      transform: translateY(-2px);
+    }
+
+    #noButton {
+      color: #4a303a;
+      background: #f3edf0;
+      border-color: #ded0d6;
+      transition: left 160ms ease, top 160ms ease;
+    }
+
+    #noButton.moving {
+      position: absolute;
+      margin: 0;
+    }
+
+    #message {
+      min-height: 26px;
+      margin: 5px 0 0;
+      color: #b2295c;
+      font-weight: 700;
+    }
+
+    .success {
+      display: none;
+    }
+
+    .card.accepted .question-content {
+      display: none;
+    }
+
+    .card.accepted .success {
+      display: block;
+    }
+
+    .success h1 {
+      margin-top: 10px;
+    }
+
+    .success p {
+      margin-bottom: 0;
+      color: #7c5967;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 16px;
+      }
+
+      .card {
+        padding: 32px 20px;
+      }
+
+      button {
+        min-width: 112px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card" id="card">
+    <section class="question-content">
+      <div class="heart" aria-hidden="true">💌</div>
+
+      <h1>Da li želiš da izađemo na dejt?</h1>
+      <p class="subtitle">Obećavam dobro društvo i nešto slatko. 😊</p>
+
+      <div class="button-zone" id="buttonZone">
+        <div class="button-row">
+          <button id="yesButton" type="button">Da ❤️</button>
+          <button id="noButton" type="button">Ne</button>
+        </div>
+      </div>
+
+      <p id="message" aria-live="polite"></p>
+    </section>
+
+    <section class="success" aria-live="polite">
+      <div class="heart" aria-hidden="true">🎉</div>
+      <h1>Dogovoreno!</h1>
+      <p>Sada još samo treba da izaberemo vreme i mesto. ❤️</p>
+    </section>
+  </main>
+
+  <script>
+    const card = document.getElementById("card");
+    const yesButton = document.getElementById("yesButton");
+    const noButton = document.getElementById("noButton");
+    const buttonZone = document.getElementById("buttonZone");
+    const message = document.getElementById("message");
+
+    yesButton.addEventListener("click", () => {
+      card.classList.add("accepted");
+    });
+
+    function moveNoButton() {
+      noButton.classList.add("moving");
+
+      const zoneRect = buttonZone.getBoundingClientRect();
+      const buttonRect = noButton.getBoundingClientRect();
+
+      const maxLeft = Math.max(0, zoneRect.width - buttonRect.width);
+      const maxTop = Math.max(0, zoneRect.height - buttonRect.height);
+
+      noButton.style.left = `${Math.random() * maxLeft}px`;
+      noButton.style.top = `${Math.random() * maxTop}px`;
+
+      message.textContent = "Hmm… pokušaj ponovo 😄";
+    }
+
+    noButton.addEventListener("mouseenter", moveNoButton);
+    noButton.addEventListener("click", moveNoButton);
+  </script>
+</body>
+</html>
